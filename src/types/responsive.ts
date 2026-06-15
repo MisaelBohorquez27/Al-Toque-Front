@@ -14,3 +14,8 @@ export const getSpacing = (width: number, multiplier: number = 1): string => {
   const baseSpacing = width < 768 ? '4' : '6';
   return `${parseInt(baseSpacing) * multiplier}`;
 };
+
+// Agrega esta función útil
+export const isMobile = (width: number): boolean => {
+  return width < 768;
+};
