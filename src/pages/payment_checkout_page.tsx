@@ -1,0 +1,144 @@
+import React, { useState } from 'react';
+import { Lock } from 'lucide-react';
+import type { PaymentFlow } from '../types/payment';
+import { usePaymentForm } from '../hooks/use_payment_form';
+import { generateCreditReportPDF } from '../utils/pdf_generator.tsx';
+import { mockCreditData } from '../data/mock_credit_data';
+import { HomeLayout } from '../components/layout/home_layout';
+import { PaymentSummary } from '../components/payment/payment_summary';
+import { PaymentForm } from '../components/payment/payment_form';
+import { PaymentSuccessDialog } from '../components/payment/payment_sucess_dialog';
+import { PaymentEmailSentDialog } from '../components/payment/payment_email_sent_dialog';
+
+interface PaymentCheckoutProps {
+  paymentFlow?: PaymentFlow;
+}
+
+export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({ 
+  paymentFlow = 'electronicSignature' 
+}) => {
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  const [showEmailDialog, setShowEmailDialog] = useState(false);
+  
+  const { formData, errors, saveCard, setSaveCard, handleChange, validateForm } = usePaymentForm();
+
+  const processPayment = async () => {
+    if (!validateForm()) return;
+    
+    setIsProcessing(true);
+    
+    // Simular procesamiento de pago
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setIsProcessing(false);
+    
+    if (paymentFlow === 'electronicSignature') {
+      // Para firma electrónica, mostrar diálogo de email
+      setShowEmailDialog(true);
+    } else {
+      // Para verificación de identidad, mostrar diálogo de éxito con PDF
+      setShowSuccessDialog(true);
+    }
+  };
+
+  const handleDownloadPDF = async () => {
+    await generateCreditReportPDF(mockCreditData);
+  };
+
+  const handleContinue = () => {
+    console.log('Continue to contract verification process');
+    // Aquí iría la navegación
+    alert('Navigate to Contract Verification Process');
+  };
+
+  const selectedBottomNavIndex = () => {
+    return 3; // Services tab
+  };
+
+  const navigateByIndex = (index: number) => {
+    console.log(`Navigate to tab ${index}`);
+    switch (index) {
+      case 0:
+        alert('Navigate to Home');
+        break;
+      case 1:
+        alert('Navigate to Contracts');
+        break;
+      case 2:
+        alert('Navigate to Properties');
+        break;
+      case 3:
+        // Already on Services
+        break;
+      case 4:
+        alert('Navigate to Settings');
+        break;
+    }
+  };
+
+  return (
+    <>
+      <HomeLayout
+        currentRoute="/payment-checkout"
+        selectedBottomNavIndex={selectedBottomNavIndex()}
+        onBottomNavTapped={navigateByIndex}
+      >
+        <div className="max-w-2xl mx-auto space-y-5 animate-fade-in">
+          {/* Header */}
+          <div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
+              Payment Checkout
+            </h1>
+            <p className="text-sm text-gray-500 mt-2">
+              Complete your payment to generate the credit report
+            </p>
+          </div>
+
+          {/* Payment Summary */}
+          <PaymentSummary />
+
+          {/* Payment Form */}
+          <PaymentForm
+            formData={formData}
+            errors={errors}
+            saveCard={saveCard}
+            onSaveCardChange={setSaveCard}
+            onChange={handleChange}
+          />
+
+          {/* Pay Button */}
+          <button
+            onClick={processPayment}
+            disabled={isProcessing}
+            className="w-full bg-primary text-white font-semibold py-3.5 rounded-xl hover:bg-primary/90 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {isProcessing ? (
+              <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+            ) : (
+              <>
+                <Lock size={18} />
+                <span>Pay $49.99</span>
+              </>
+            )}
+          </button>
+        </div>
+      </HomeLayout>
+
+      {/* Dialogs */}
+      {showSuccessDialog && (
+        <PaymentSuccessDialog
+          onDownloadPdf={handleDownloadPDF}
+          onClose={() => setShowSuccessDialog(false)}
+        />
+      )}
+      
+      {showEmailDialog && (
+        <PaymentEmailSentDialog
+          onContinue={handleContinue}
+          onClose={() => setShowEmailDialog(false)}
+        />
+      )}
+    </>
+  );
+};

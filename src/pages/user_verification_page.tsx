@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useResponsive } from '../hooks/useResponsive';
 import { mockUsers } from '../data/mock_users';
 import { HomeLayout } from '../components/layout/home_layout';
@@ -12,6 +13,7 @@ export const UserVerificationPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [selectedUser, setSelectedUser] = useState<UserVerification | null>(null);
+  const navigate = useNavigate();
   const { isMobile } = useResponsive();
 
   const filteredUsers = useMemo(() => {
@@ -35,9 +37,8 @@ export const UserVerificationPage: React.FC = () => {
   };
 
   const handleConfirmVerification = () => {
-    console.log('Navigate to Payment Checkout - Identity Verification');
-    alert('Navigate to Payment Checkout');
-    // Aquí iría la navegación al checkout de pago
+    setSelectedUser(null);
+    navigate('/payment-checkout');
   };
 
   const handleCancelVerification = () => {

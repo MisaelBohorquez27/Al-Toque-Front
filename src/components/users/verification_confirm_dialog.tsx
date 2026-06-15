@@ -22,7 +22,7 @@ const InfoRow: React.FC<InfoRowProps> = ({ icon: Icon, label, value }) => (
     </div>
     <div className="flex-1 min-w-0">
       <p className="text-xs text-slate-500 mb-0.5">{label}</p>
-      <p className="text-sm font-medium text-slate-900 break-words">{value}</p>
+      <p className="text-sm font-medium text-slate-900 wrap-break-word">{value}</p>
     </div>
   </div>
 );
@@ -69,7 +69,7 @@ export const VerificationConfirmDialog: React.FC<VerificationConfirmDialogProps>
     >
       <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] flex flex-col shadow-xl animate-slide-up">
         {/* Header - Fijo */}
-        <div className="bg-gradient-to-br from-yellow-50 to-transparent p-5 border-b border-slate-200 rounded-t-2xl shrink-0">
+        <div className="bg-linear-to-br from-yellow-50 to-transparent p-5 border-b border-slate-200 rounded-t-2xl shrink-0">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center shrink-0">
@@ -98,7 +98,7 @@ export const VerificationConfirmDialog: React.FC<VerificationConfirmDialogProps>
         >
           {/* Avatar */}
           <div className="flex justify-center">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
+            <div className="w-20 h-20 rounded-full bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg">
               <span className="text-3xl font-bold text-white">{initial}</span>
             </div>
           </div>
