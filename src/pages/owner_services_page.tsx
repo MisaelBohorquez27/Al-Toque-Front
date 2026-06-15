@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import clsx from "clsx";
 import { getResponsiveColumns } from "../types/responsive";
 import type { ServiceItem } from "../types";
@@ -8,8 +9,8 @@ import { Header } from "../components/ui/header";
 import { ServiceCard } from "../components/service_card";
 
 export const OwnerServices: React.FC = () => {
+  const navigate = useNavigate();
   const [columns, setColumns] = useState(2);
-  //@ts-checkconst [activeServiceId, setActiveServiceId] = useState<string>('identity');
 
   useEffect(() => {
     const handleResize = () => {
@@ -22,16 +23,11 @@ export const OwnerServices: React.FC = () => {
   }, []);
 
   const handleIdentityVerification = () => {
-    //  setActiveServiceId('identity');
-    console.log("Navigate to Identity Verification");
-    // Aquí iría la navegación
-    alert("Navigate to Identity Verification");
+    navigate('/owner/user-verification');
   };
 
   const handleElectronicSignature = () => {
-    //  setActiveServiceId('signature');
     console.log("Navigate to Electronic Signature");
-    // Aquí iría la navegación
     alert("Navigate to Electronic Signature Contract");
   };
 
