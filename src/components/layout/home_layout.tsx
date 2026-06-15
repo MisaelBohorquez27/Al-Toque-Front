@@ -24,19 +24,19 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-transparent text-slate-900">
-      <div className="mx-auto flex min-h-screen w-full max-w-[76rem] flex-col lg:flex-row">
+      <div className="flex min-h-screen w-full flex-col lg:flex-row">
         <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:border-r lg:border-white/60 lg:bg-white/70 lg:backdrop-blur-xl">
-          <div className="px-6 py-8">
-            <div className="rounded-[28px] border border-slate-200/70 bg-gradient-to-br from-slate-950 to-slate-800 p-5 text-white shadow-[0_20px_70px_rgba(15,23,42,0.28)]">
-              <p className="text-xs uppercase tracking-[0.3em] text-blue-200/80">Al Toque</p>
-              <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">Gestión clara, rápida y segura</h2>
+          <div className="px-6 py-8 bg-sky-950">
+            <div className="rounded-[28px] borderbg-linear-to-br p-5 text-white">
+              <p className="text-xs uppercase tracking-[0.3em] text-white font-bold">Al Toque</p>
+             {/*  <h2 className="mt-3 text-2xl font-semibold tracking-tight text-white">Gestión clara, rápida y segura</h2>
               <p className="mt-2 text-sm leading-6 text-slate-300">
                 Navega entre tus servicios, contratos y propiedades desde una experiencia más limpia.
-              </p>
+              </p> */}
             </div>
           </div>
 
-          <nav className="flex-1 px-4 pb-6 space-y-2">
+          <nav className="flex-1 px-4 py-8 space-y-2">
             {navItems.map((item, index) => {
               const Icon = item.icon;
               const isSelected = selectedBottomNavIndex === index;
@@ -48,8 +48,8 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
                   className={clsx(
                     'flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all duration-200',
                     isSelected
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                      : 'text-slate-600 hover:bg-slate-100'
+                      ? 'bg-sky-950 text-white shadow-lg shadow-blue-600/20'
+                      : 'text-gray-700 hover:bg-sky-950/10 hover:text-sky-950'
                   )}
                 >
                   <Icon size={20} />

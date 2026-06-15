@@ -1,17 +1,27 @@
-import React from 'react';
+import React from "react";
+import { Bell, User } from "lucide-react";
 
 export const Header: React.FC = () => {
   return (
-    <div className="animate-fade-in mb-6 md:mb-8">
-      <div className="inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-blue-700 shadow-sm backdrop-blur">
-        Owner Services
+    <div className="flex flex-row items-center justify-between mb-6 md:mb-8 lg:mb-12">
+      <div className="animate-fade-in">
+        <h1 className="text-md font-semibold tracking-tight text-slate-950 md:text-xl lg:text-2xl">
+          Bienvenido, <span className="text-sky-600">Moises</span>
+        </h1>
+        <p className="max-w-3xl text-sm leading-6 text-green-600 md:text-base">
+          Online
+        </p>
       </div>
-      <h1 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl lg:text-5xl">
-        Centraliza tus servicios sin perder claridad
-      </h1>
-      <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600 md:text-base">
-        Revisa identidad y firma electrónica con una interfaz más limpia, con jerarquía visual y mejor soporte para Tailwind.
-      </p>
+      
+      {/* Aqui ira notificaciones */}
+      <div className="flex items-center gap-2">
+        <div className="animate-fade-in rounded-full p-2 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">
+          <Bell size={20} />
+        </div>
+        <div className="animate-fade-in rounded-full p-2 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">
+          <User size={20} />
+        </div>
+      </div>
     </div>
   );
 };
