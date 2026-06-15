@@ -9,6 +9,7 @@ import { ServiceCard } from '../components/service_card';
 
 export const OwnerServices: React.FC = () => {
   const [columns, setColumns] = useState(2);
+  const [activeServiceId, setActiveServiceId] = useState<string>('identity');
 
   useEffect(() => {
     const handleResize = () => {
@@ -21,12 +22,14 @@ export const OwnerServices: React.FC = () => {
   }, []);
 
   const handleIdentityVerification = () => {
+    setActiveServiceId('identity');
     console.log('Navigate to Identity Verification');
     // Aquí iría la navegación
     alert('Navigate to Identity Verification');
   };
 
   const handleElectronicSignature = () => {
+    setActiveServiceId('signature');
     console.log('Navigate to Electronic Signature');
     // Aquí iría la navegación
     alert('Navigate to Electronic Signature Contract');
@@ -99,7 +102,41 @@ export const OwnerServices: React.FC = () => {
     >
       <div className="animate-fade-in">
         <Header />
-        
+
+        <section className="mb-6 rounded-[28px] border border-white/70 bg-white/75 p-5 shadow-[0_18px_60px_rgba(15,23,42,0.06)] backdrop-blur-xl md:p-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-600">Resumen</p>
+              <h2 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 md:text-2xl">
+                {columns} columnas visibles según el ancho de pantalla
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                La grilla se adapta automáticamente. La tarjeta activa está pensada como el siguiente paso de navegación o detalle.
+              </p>
+            </div>
+
+            <div className="flex gap-2 rounded-2xl bg-slate-100 p-1">
+              {services.map((service) => {
+                const isActive = activeServiceId === service.id;
+
+                return (
+                  <button
+                    key={service.id}
+                    type="button"
+                    onClick={() => setActiveServiceId(service.id)}
+                    className={clsx(
+                      'rounded-xl px-4 py-2 text-sm font-medium transition-all',
+                      isActive ? 'bg-white text-slate-950 shadow-sm' : 'text-slate-500 hover:text-slate-800'
+                    )}
+                  >
+                    {service.title}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         <div className={clsx('grid gap-4 md:gap-6', getGridCols())}>
           {services.map((service, index) => (
             <div

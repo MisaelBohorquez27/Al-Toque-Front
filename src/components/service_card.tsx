@@ -8,38 +8,42 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ item }) => {
   return (
     <div
       onClick={item.onTap}
-      className="group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer animate-slide-up"
+      className="group relative cursor-pointer overflow-hidden rounded-[24px] border border-white/80 bg-white/85 shadow-[0_18px_60px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(37,99,235,0.14)] animate-slide-up backdrop-blur-xl"
     >
-      <div className="p-4 md:p-5 h-full flex flex-col">
-        {/* Icon with gradient background */}
+      <div
+        className="absolute inset-x-0 top-0 h-1 opacity-90"
+        style={{ background: `linear-gradient(90deg, ${item.color}, ${item.color}aa)` }}
+      />
+
+      <div className="flex h-full flex-col p-5 md:p-6">
         <div
-          className="inline-flex p-2.5 rounded-xl w-fit transition-transform group-hover:scale-105"
+          className="inline-flex w-fit rounded-2xl p-3 transition-transform group-hover:scale-105"
           style={{
             background: `linear-gradient(135deg, ${item.color}, ${item.color}cc)`,
           }}
         >
-          <IconComponent size={20} className="text-white" />
+          <IconComponent size={22} className="text-white" />
         </div>
 
-        <div className="mt-3 md:mt-4 flex-1">
-          {/* Title */}
-          <h3 className="text-sm md:text-base font-bold text-text-primary tracking-tight mb-1.5 line-clamp-1">
+        <div className="mt-4 flex-1">
+          <h3 className="mb-2 line-clamp-1 text-base font-semibold tracking-tight text-slate-950 md:text-lg">
             {item.title}
           </h3>
 
-          {/* Description */}
-          <p className="text-xs text-text-secondary leading-relaxed line-clamp-2">
+          <p className="line-clamp-2 text-sm leading-6 text-slate-600">
             {item.description}
           </p>
         </div>
 
-        {/* Arrow indicator */}
-        <div className="mt-3 flex justify-end">
+        <div className="mt-5 flex items-center justify-between border-t border-slate-100 pt-4">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+            Ver detalle
+          </span>
           <div
-            className="p-1.5 rounded-lg transition-all group-hover:scale-110"
-            style={{ backgroundColor: `${item.color}1a` }}
+            className="rounded-xl p-2 transition-all group-hover:scale-110"
+            style={{ backgroundColor: `${item.color}15` }}
           >
-            <ArrowRight size={14} style={{ color: item.color }} />
+            <ArrowRight size={16} style={{ color: item.color }} />
           </div>
         </div>
       </div>
