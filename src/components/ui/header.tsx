@@ -12,14 +12,14 @@ export const Header: React.FC = () => {
           Online
         </p>
       </div>
-      
+
       {/* Aqui ira notificaciones */}
-      <div className="flex items-center gap-2">
-        <div className="animate-fade-in rounded-full p-2 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">
-          <Bell size={20} />
-        </div>
+      <div className="flex items-center gap-3">
         <div className="animate-fade-in rounded-full p-2 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">
           <User size={20} />
+        </div>
+        <div className="animate-fade-in rounded-full p-2 text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">
+          <Bell size={20} />
         </div>
       </div>
     </div>

@@ -97,7 +97,7 @@ export const OwnerServices: React.FC = () => {
       selectedBottomNavIndex={selectedBottomNavIndex()}
       onBottomNavTapped={navigateByIndex}
     >
-      <div className="animate-fade-in">
+      <div className="animate-fade-in px-4">
         <Header />
         {/* Aqui habra un titulo */}
         <div className="mt-6 md:mt-8 lg:mt-12">

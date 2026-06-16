@@ -46,7 +46,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
                   key={index}
                   onClick={() => onBottomNavTapped(index)}
                   className={clsx(
-                    'flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all duration-200',
+                    'flex w-full items-center gap-3 rounded-2xl px-4 py-3 text-left transition-all duration-200 cursor-pointer',
                     isSelected
                       ? 'bg-sky-950 text-white shadow-lg shadow-blue-600/20'
                       : 'text-gray-700 hover:bg-sky-950/10 hover:text-sky-950'
