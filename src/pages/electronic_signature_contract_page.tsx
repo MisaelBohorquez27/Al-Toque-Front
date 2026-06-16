@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FileText, Users, ArrowRight } from 'lucide-react';
-import type { ContractFile, Participant } from '../types/signature';
+import type { Participant, ContractFile } from '../types/signature';
 import { HomeLayout } from '../components/layout/home_layout';
+import { ContractUpload } from '../components/signature/contract_upload';
 import { ParticipantForm } from '../components/signature/participant_form';
 import { ParticipantCard } from '../components/signature/participant_card';
-import { ContractUpload } from '../components/signature/contract_upload';
 
 export const ElectronicSignatureContract: React.FC = () => {
+  const navigate = useNavigate();
   const [contractFile, setContractFile] = useState<ContractFile | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
 
@@ -31,9 +33,14 @@ export const ElectronicSignatureContract: React.FC = () => {
       alert('Please add at least one participant');
       return;
     }
-    // Navegar a la pantalla de firma
-    console.log('Navigate to signature screen with:', { contractFile, participants });
-    alert('Navigate to Electronic Signature Sign Screen');
+    
+    // Navegar a la pantalla de firma electrónica
+    navigate('/owner/electronic-signature-sign', {
+      state: {
+        participants,
+        contractFile,
+      },
+    });
   };
 
   const selectedBottomNavIndex = () => 3;
@@ -115,7 +122,7 @@ export const ElectronicSignatureContract: React.FC = () => {
           onClick={handleContinue}
           className="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
         >
-          Continue
+          Continue to Payment
           <ArrowRight size={18} />
         </button>
       </div>

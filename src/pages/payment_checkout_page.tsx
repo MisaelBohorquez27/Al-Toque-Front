@@ -1,21 +1,30 @@
 import React, { useState } from 'react';
 import { Lock } from 'lucide-react';
 import type { PaymentFlow } from '../types/payment';
+import type { Participant } from '../types/signature';
 import { usePaymentForm } from '../hooks/use_payment_form';
-import { generateCreditReportPDF } from '../utils/pdf_generator.tsx';
 import { mockCreditData } from '../data/mock_credit_data';
 import { HomeLayout } from '../components/layout/home_layout';
-import { PaymentSummary } from '../components/payment/payment_summary';
-import { PaymentForm } from '../components/payment/payment_form';
+import { generateCreditReportPDF } from '../utils/pdf_generator.tsx';
 import { PaymentSuccessDialog } from '../components/payment/payment_sucess_dialog';
 import { PaymentEmailSentDialog } from '../components/payment/payment_email_sent_dialog';
+import { PaymentSummary } from '../components/payment/payment_summary';
+import { PaymentForm } from '../components/payment/payment_form';
 
 interface PaymentCheckoutProps {
   paymentFlow?: PaymentFlow;
+  participants?: Participant[];
+  contractFile?: File;
+  contractFileName?: string;
+  onPaymentComplete?: () => void;
 }
 
 export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({ 
-  paymentFlow = 'electronicSignature' 
+  paymentFlow = 'electronicSignature',
+  participants = [],
+  contractFile,
+  contractFileName,
+  onPaymentComplete
 }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
@@ -46,35 +55,17 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
     await generateCreditReportPDF(mockCreditData);
   };
 
-  const handleContinue = () => {
-    console.log('Continue to contract verification process');
-    // Aquí iría la navegación
-    alert('Navigate to Contract Verification Process');
+  const handleContinueToSignatures = () => {
+    // Navegar a la pantalla de firmas
+    console.log('Continue to signatures with:', { participants, contractFile, contractFileName });
+    // Aquí iría la navegación real a ElectronicSignatureSign
+    alert('Navigate to Electronic Signature Sign Screen');
+    onPaymentComplete?.();
   };
 
-  const selectedBottomNavIndex = () => {
-    return 3; // Services tab
-  };
-
+  const selectedBottomNavIndex = () => 3;
   const navigateByIndex = (index: number) => {
     console.log(`Navigate to tab ${index}`);
-    switch (index) {
-      case 0:
-        alert('Navigate to Home');
-        break;
-      case 1:
-        alert('Navigate to Contracts');
-        break;
-      case 2:
-        alert('Navigate to Properties');
-        break;
-      case 3:
-        // Already on Services
-        break;
-      case 4:
-        alert('Navigate to Settings');
-        break;
-    }
   };
 
   return (
@@ -91,7 +82,7 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
               Payment Checkout
             </h1>
             <p className="text-sm text-gray-500 mt-2">
-              Complete your payment to generate the credit report
+              Complete your payment to {paymentFlow === 'electronicSignature' ? 'enable electronic signatures' : 'generate the credit report'}
             </p>
           </div>
 
@@ -135,7 +126,7 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
       
       {showEmailDialog && (
         <PaymentEmailSentDialog
-          onContinue={handleContinue}
+          onContinue={handleContinueToSignatures}
           onClose={() => setShowEmailDialog(false)}
         />
       )}

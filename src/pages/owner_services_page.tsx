@@ -27,8 +27,7 @@ export const OwnerServices: React.FC = () => {
   };
 
   const handleElectronicSignature = () => {
-    console.log("Navigate to Electronic Signature");
-    alert("Navigate to Electronic Signature Contract");
+    navigate('/owner/electronic-signature-contract');
   };
 
   const services: ServiceItem[] = [

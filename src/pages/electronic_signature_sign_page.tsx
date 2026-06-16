@@ -2,12 +2,19 @@ import React, { useState } from 'react';
 import { Check, Loader2 } from 'lucide-react';
 import type { Participant } from '../types/signature';
 import { HomeLayout } from '../components/layout/home_layout';
+import { SignatureSuccess } from '../components/signature/signature_success';
+import { SignerProgress } from '../components/signature/signer_progress';
 import { CurrentSignerCard } from '../components/signature/current_signer_card';
 import { SignaturePad } from '../components/signature/signature_pad';
-import { SignerProgress } from '../components/signature/signer_progress';
 
-// Datos mock - en producción vendrían de la navegación
-const mockParticipants: Participant[] = [
+
+interface ElectronicSignatureSignProps {
+  participants?: Participant[];
+  onComplete?: () => void;
+}
+
+// Datos mock para demostración
+const DEFAULT_PARTICIPANTS: Participant[] = [
   {
     id: '1',
     category: 'owner',
@@ -28,12 +35,17 @@ const mockParticipants: Participant[] = [
   },
 ];
 
-export const ElectronicSignatureSign: React.FC = () => {
+export const ElectronicSignatureSign: React.FC<ElectronicSignatureSignProps> = ({ 
+  participants: propParticipants,
+  onComplete 
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [currentSignerIndex, setCurrentSignerIndex] = useState(0);
   const [isSignatureValid, setIsSignatureValid] = useState(false);
-  const [participants] = useState<Participant[]>(mockParticipants);
+  const [participants] = useState<Participant[]>(() => 
+    propParticipants && propParticipants.length > 0 ? propParticipants : DEFAULT_PARTICIPANTS
+  );
 
   const currentParticipant = participants[currentSignerIndex];
 
@@ -65,14 +77,34 @@ export const ElectronicSignatureSign: React.FC = () => {
   };
 
   const handleFinish = () => {
+    // Mostrar mensaje de éxito
     alert('Contract signed successfully by all parties');
-    // Navegar al home
+    
+    // Llamar callback si existe
+    if (onComplete) {
+      onComplete();
+    }
   };
 
   const selectedBottomNavIndex = () => 3;
   const navigateByIndex = (index: number) => {
     console.log(`Navigate to tab ${index}`);
   };
+
+  if (participants.length === 0) {
+    return (
+      <HomeLayout
+        currentRoute="/electronic-signature-sign"
+        selectedBottomNavIndex={selectedBottomNavIndex()}
+        onBottomNavTapped={navigateByIndex}
+      >
+        <div className="flex flex-col items-center justify-center min-h-[60vh]">
+          <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4" />
+          <p className="text-gray-500">Loading signers...</p>
+        </div>
+      </HomeLayout>
+    );
+  }
 
   if (isSuccess) {
     return (
@@ -81,23 +113,7 @@ export const ElectronicSignatureSign: React.FC = () => {
         selectedBottomNavIndex={selectedBottomNavIndex()}
         onBottomNavTapped={navigateByIndex}
       >
-        <div className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
-          <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mb-6">
-            <Check size={44} className="text-green-600" />
-          </div>
-          <h2 className="text-2xl font-extrabold text-gray-900 mb-3 text-center">
-            All Signatures Complete!
-          </h2>
-          <p className="text-sm text-gray-500 mb-8 text-center">
-            The contract has been signed by all parties
-          </p>
-          <button
-            onClick={handleFinish}
-            className="px-8 py-3 bg-green-500 text-white font-bold rounded-xl hover:bg-green-600 transition-colors"
-          >
-            Finish
-          </button>
-        </div>
+        <SignatureSuccess onFinish={handleFinish} />
       </HomeLayout>
     );
   }

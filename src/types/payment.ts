@@ -1,5 +1,12 @@
 export type PaymentFlow = 'electronicSignature' | 'identityVerification';
 
+export interface Participant {
+  id: string;
+  category: string;
+  name: string;
+  email: string;
+}
+
 export interface UserCreditData {
   identificacionTitular: string;
   scoreFinanciero: number;
