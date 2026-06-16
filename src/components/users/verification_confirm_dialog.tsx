@@ -69,11 +69,11 @@ export const VerificationConfirmDialog: React.FC<VerificationConfirmDialogProps>
     >
       <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] flex flex-col shadow-xl animate-slide-up">
         {/* Header - Fijo */}
-        <div className="bg-linear-to-br from-yellow-50 to-transparent p-5 border-b border-slate-200 rounded-t-2xl shrink-0">
+        <div className="bg-linear-to-br from-sky-50 to-transparent p-5 border-b border-sky-200 rounded-t-2xl shrink-0">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center shrink-0">
-                <ShieldCheck size={20} className="text-yellow-600" />
+              <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center shrink-0">
+                <ShieldCheck size={20} className="text-sky-600" />
               </div>
               <div>
                 <h2 className="text-lg font-extrabold text-slate-900">Verify Identity</h2>

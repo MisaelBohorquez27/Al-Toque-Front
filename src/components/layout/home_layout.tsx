@@ -49,7 +49,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
         {/* Sidebar Desktop */}
         <aside className="hidden lg:flex lg:w-72 lg:flex-col lg:border-r lg:border-gray-200 lg:bg-white/95 lg:backdrop-blur-xl lg:shadow-xl">
           {/* Header del Sidebar */}
-          <div className="px-6 py-8 bg-linear-to-br from-sky-900 to-sky-800">
+          <div className="px-6 py-8 bg-linear-to-br from-sky-950 to-sky-900">
             <div className="rounded-2xl p-5 text-white">
               <h3 className="text-md uppercase tracking-[0.3em] font-bold text-sky-200">
                 Al Toque

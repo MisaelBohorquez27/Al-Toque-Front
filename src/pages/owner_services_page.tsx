@@ -37,7 +37,7 @@ export const OwnerServices: React.FC = () => {
       description:
         "Verify your identity with government ID and personal information",
       icon: IdCard,
-      color: "#3B82F6",
+      color: "#265091",
       onTap: handleIdentityVerification,
     },
     {
@@ -45,7 +45,7 @@ export const OwnerServices: React.FC = () => {
       title: "Electronic Signature",
       description: "Create and manage your digital signature for contracts",
       icon: Signature,
-      color: "#8B5CF6",
+      color: "#268891",
       onTap: handleElectronicSignature,
     },
   ];
