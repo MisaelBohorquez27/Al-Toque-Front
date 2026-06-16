@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FileText, Users, ArrowRight } from 'lucide-react';
 import type { Participant, ContractFile } from '../types/signature';
 import { HomeLayout } from '../components/layout/home_layout';
@@ -9,8 +9,11 @@ import { ParticipantCard } from '../components/signature/participant_card';
 
 export const ElectronicSignatureContract: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [contractFile, setContractFile] = useState<ContractFile | null>(null);
   const [participants, setParticipants] = useState<Participant[]>([]);
+
+  const parentRoute = (location.state as { parentRoute?: string } | null)?.parentRoute;
 
   const handleAddParticipant = (participant: Omit<Participant, 'id'>) => {
     const newParticipant = {
@@ -40,6 +43,7 @@ export const ElectronicSignatureContract: React.FC = () => {
         participants,
         contractFile,
         contractFileName: contractFile.name,
+        parentRoute,
       },
     });
   };
@@ -52,6 +56,7 @@ export const ElectronicSignatureContract: React.FC = () => {
     <HomeLayout
       currentRoute="/electronic-signature-contract"
       onNavigate={handleNavigate}
+      parentRoute={parentRoute}
     >
       <div className="max-w-4xl mx-auto space-y-5 animate-fade-in">
         <div>

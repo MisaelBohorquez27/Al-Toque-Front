@@ -23,11 +23,11 @@ export const OwnerServices: React.FC = () => {
   }, []);
 
   const handleIdentityVerification = () => {
-    navigate('/owner/user-verification');
+    navigate('/owner/user-verification', { state: { parentRoute: '/owner/services' } });
   };
 
   const handleElectronicSignature = () => {
-    navigate('/owner/electronic-signature-contract');
+    navigate('/owner/electronic-signature-contract', { state: { parentRoute: '/owner/services' } });
   };
 
   const services: ServiceItem[] = [

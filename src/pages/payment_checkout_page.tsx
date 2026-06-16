@@ -25,6 +25,7 @@ interface PaymentCheckoutLocationState {
   participants?: Participant[];
   contractFile?: ContractFile;
   contractFileName?: string;
+  parentRoute?: string;
 }
 
 export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
@@ -46,6 +47,7 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
     navigationState?.contractFileName ??
     effectiveContractFile?.name ??
     contractFileName;
+  const parentRoute = navigationState?.parentRoute;
 
   const primarySigner = useMemo(() => {
     if (!effectiveParticipants || effectiveParticipants.length === 0) {
@@ -91,6 +93,7 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
         participants: effectiveParticipants,
         contractFile: effectiveContractFile,
         contractFileName: effectiveContractFileName,
+        parentRoute,
       },
     });
 
@@ -106,6 +109,7 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
       <HomeLayout
         currentRoute="/payment-checkout"
         onNavigate={handleNavigate}
+        parentRoute={parentRoute}
       >
         <div className="max-w-2xl mx-auto space-y-5 animate-fade-in">
           <div>

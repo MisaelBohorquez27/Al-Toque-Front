@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useResponsive } from '../hooks/useResponsive';
 import { mockUsers } from '../data/mock_users';
 import { HomeLayout } from '../components/layout/home_layout';
@@ -10,11 +10,14 @@ import { VerificationConfirmDialog } from '../components/users/verification_conf
 import type { UserVerification } from '../types/user_verification';
 
 export const UserVerificationPage: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState('All');
   const [selectedUser, setSelectedUser] = useState<UserVerification | null>(null);
-  const navigate = useNavigate();
   const { isMobile } = useResponsive();
+
+  const parentRoute = (location.state as { parentRoute?: string } | null)?.parentRoute;
 
   const filteredUsers = useMemo(() => {
     return mockUsers.filter((user) => {
@@ -38,7 +41,7 @@ export const UserVerificationPage: React.FC = () => {
 
   const handleConfirmVerification = () => {
     setSelectedUser(null);
-    navigate('/payment-checkout', { state: { paymentFlow: 'identityVerification' } });
+    navigate('/payment-checkout', { state: { paymentFlow: 'identityVerification', parentRoute } });
   };
 
   const handleCancelVerification = () => {
@@ -54,6 +57,7 @@ export const UserVerificationPage: React.FC = () => {
       <HomeLayout
         currentRoute="/owner/user-verification"
         onNavigate={handleNavigate}
+        parentRoute={parentRoute}
       >
         <div className="space-y-4 md:space-y-6 animate-fade-in">
           {/* Header */}

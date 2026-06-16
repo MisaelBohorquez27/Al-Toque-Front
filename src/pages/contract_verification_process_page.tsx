@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import type { UploadedFile, VerificationStep } from '../types/verification';
 import { HomeLayout } from '../components/layout/home_layout';
 import { SuccessContent } from '../components/verification/sucess_content';
@@ -23,6 +23,8 @@ export const ContractVerificationProcess: React.FC<ContractVerificationProcessPr
   onComplete,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const parentRoute = (location.state as { parentRoute?: string } | null)?.parentRoute;
   const [currentStep, setCurrentStep] = useState<VerificationStep>(1);
   const [cedulaFile, setCedulaFile] = useState<UploadedFile | null>(null);
   const [photoFile, setPhotoFile] = useState<UploadedFile | null>(null);
@@ -124,6 +126,7 @@ export const ContractVerificationProcess: React.FC<ContractVerificationProcessPr
       <HomeLayout
         currentRoute="/owner/contract-verification"
         onNavigate={handleNavigate}
+        parentRoute={parentRoute}
       >
         <div className="max-w-2xl mx-auto">
           <SuccessContent
@@ -139,6 +142,7 @@ export const ContractVerificationProcess: React.FC<ContractVerificationProcessPr
     <HomeLayout
       currentRoute="/owner/contract-verification"
       onNavigate={handleNavigate}
+      parentRoute={parentRoute}
     >
       <div className="max-w-2xl mx-auto space-y-5 animate-fade-in">
         {/* Header */}

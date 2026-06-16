@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Check, Loader2 } from 'lucide-react';
 import type { Participant } from '../types/signature';
 import { HomeLayout } from '../components/layout/home_layout';
@@ -39,6 +40,8 @@ export const ElectronicSignatureSign: React.FC<ElectronicSignatureSignProps> = (
   participants: propParticipants,
   onComplete 
 }) => {
+  const location = useLocation();
+  const parentRoute = (location.state as { parentRoute?: string } | null)?.parentRoute;
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [currentSignerIndex, setCurrentSignerIndex] = useState(0);
@@ -86,17 +89,16 @@ export const ElectronicSignatureSign: React.FC<ElectronicSignatureSignProps> = (
     }
   };
 
-  const selectedBottomNavIndex = () => 3;
-  const navigateByIndex = (index: number) => {
-    console.log(`Navigate to tab ${index}`);
+  const handleNavigate = (route: string) => {
+    // Navigation logic if needed
   };
 
   if (participants.length === 0) {
     return (
       <HomeLayout
-        currentRoute="/electronic-signature-sign"
-        selectedBottomNavIndex={selectedBottomNavIndex()}
-        onBottomNavTapped={navigateByIndex}
+        currentRoute="/owner/electronic-signature-sign"
+        onNavigate={handleNavigate}
+        parentRoute={parentRoute}
       >
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
           <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-4" />
@@ -109,9 +111,9 @@ export const ElectronicSignatureSign: React.FC<ElectronicSignatureSignProps> = (
   if (isSuccess) {
     return (
       <HomeLayout
-        currentRoute="/electronic-signature-sign"
-        selectedBottomNavIndex={selectedBottomNavIndex()}
-        onBottomNavTapped={navigateByIndex}
+        currentRoute="/owner/electronic-signature-sign"
+        onNavigate={handleNavigate}
+        parentRoute={parentRoute}
       >
         <SignatureSuccess onFinish={handleFinish} />
       </HomeLayout>
@@ -121,9 +123,9 @@ export const ElectronicSignatureSign: React.FC<ElectronicSignatureSignProps> = (
   if (isLoading) {
     return (
       <HomeLayout
-        currentRoute="/electronic-signature-sign"
-        selectedBottomNavIndex={selectedBottomNavIndex()}
-        onBottomNavTapped={navigateByIndex}
+        currentRoute="/owner/electronic-signature-sign"
+        onNavigate={handleNavigate}
+        parentRoute={parentRoute}
       >
         <div className="flex flex-col items-center justify-center min-h-[60vh] animate-fade-in">
           <Loader2 size={48} className="text-primary animate-spin mb-6" />
@@ -140,9 +142,9 @@ export const ElectronicSignatureSign: React.FC<ElectronicSignatureSignProps> = (
 
   return (
     <HomeLayout
-      currentRoute="/electronic-signature-sign"
-      selectedBottomNavIndex={selectedBottomNavIndex()}
-      onBottomNavTapped={navigateByIndex}
+      currentRoute="/owner/electronic-signature-sign"
+      onNavigate={handleNavigate}
+      parentRoute={parentRoute}
     >
       <div className="max-w-2xl mx-auto space-y-5 animate-fade-in">
         {/* Header */}

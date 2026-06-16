@@ -13,6 +13,7 @@ interface HomeLayoutProps {
   children: React.ReactNode;
   currentRoute: string;
   onNavigate: (route: string, index: number) => void;
+  parentRoute?: string;
 }
 
 // Configuración de navegación centralizada
@@ -26,10 +27,12 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({
   children,
   currentRoute,
   onNavigate,
+  parentRoute,
 }) => {
-  // Encontrar el índice seleccionado basado en la ruta actual
+  // Encontrar el índice seleccionado basado en la ruta actual o ruta padre
   const getSelectedIndex = (): number => {
-    const foundItem = NAV_ITEMS.find(item => currentRoute.includes(item.route));
+    const routeToCheck = parentRoute || currentRoute;
+    const foundItem = NAV_ITEMS.find(item => routeToCheck.includes(item.route));
     return foundItem?.index ?? 0;
   };
 
