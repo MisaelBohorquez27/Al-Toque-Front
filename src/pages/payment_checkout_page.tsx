@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
 import type { PaymentFlow } from '../types/payment';
-import type { Participant } from '../types/signature';
+import type { Participant, ContractFile } from '../types/signature';
 import { usePaymentForm } from '../hooks/use_payment_form';
 import { mockCreditData } from '../data/mock_credit_data';
 import { HomeLayout } from '../components/layout/home_layout';
@@ -14,39 +15,63 @@ import { PaymentForm } from '../components/payment/payment_form';
 interface PaymentCheckoutProps {
   paymentFlow?: PaymentFlow;
   participants?: Participant[];
-  contractFile?: File;
+  contractFile?: ContractFile;
   contractFileName?: string;
   onPaymentComplete?: () => void;
 }
 
-export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({ 
+interface PaymentCheckoutLocationState {
+  paymentFlow?: PaymentFlow;
+  participants?: Participant[];
+  contractFile?: ContractFile;
+  contractFileName?: string;
+}
+
+export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
   paymentFlow = 'electronicSignature',
   participants = [],
   contractFile,
   contractFileName,
-  onPaymentComplete
+  onPaymentComplete,
 }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const navigationState = (location.state as PaymentCheckoutLocationState | null) ?? null;
+
+  const effectivePaymentFlow = navigationState?.paymentFlow ?? paymentFlow;
+  const effectiveParticipants = navigationState?.participants ?? participants;
+  const effectiveContractFile = navigationState?.contractFile ?? contractFile;
+  const effectiveContractFileName =
+    navigationState?.contractFileName ??
+    effectiveContractFile?.name ??
+    contractFileName;
+
+  const primarySigner = useMemo(() => {
+    if (!effectiveParticipants || effectiveParticipants.length === 0) {
+      return null;
+    }
+    return effectiveParticipants[0];
+  }, [effectiveParticipants]);
+
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
   const [showEmailDialog, setShowEmailDialog] = useState(false);
-  
+
   const { formData, errors, saveCard, setSaveCard, handleChange, validateForm } = usePaymentForm();
 
   const processPayment = async () => {
     if (!validateForm()) return;
-    
+
     setIsProcessing(true);
-    
-    // Simular procesamiento de pago
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     setIsProcessing(false);
-    
-    if (paymentFlow === 'electronicSignature') {
-      // Para firma electrónica, mostrar diálogo de email
+
+    if (effectivePaymentFlow === 'electronicSignature') {
       setShowEmailDialog(true);
     } else {
-      // Para verificación de identidad, mostrar diálogo de éxito con PDF
       setShowSuccessDialog(true);
     }
   };
@@ -56,40 +81,44 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
   };
 
   const handleContinueToSignatures = () => {
-    // Navegar a la pantalla de firmas
-    console.log('Continue to signatures with:', { participants, contractFile, contractFileName });
-    // Aquí iría la navegación real a ElectronicSignatureSign
-    alert('Navigate to Electronic Signature Sign Screen');
+    setShowEmailDialog(false);
+
+    navigate('/owner/contract-verification', {
+      state: {
+        signerRole: primarySigner?.category,
+        signerName: primarySigner?.name,
+        signerEmail: primarySigner?.email,
+        participants: effectiveParticipants,
+        contractFile: effectiveContractFile,
+        contractFileName: effectiveContractFileName,
+      },
+    });
+
     onPaymentComplete?.();
   };
 
-  const selectedBottomNavIndex = () => 3;
-  const navigateByIndex = (index: number) => {
-    console.log(`Navigate to tab ${index}`);
+  const handleNavigate = (route: string) => {
+    navigate(route);
   };
 
   return (
     <>
       <HomeLayout
         currentRoute="/payment-checkout"
-        selectedBottomNavIndex={selectedBottomNavIndex()}
-        onBottomNavTapped={navigateByIndex}
+        onNavigate={handleNavigate}
       >
         <div className="max-w-2xl mx-auto space-y-5 animate-fade-in">
-          {/* Header */}
           <div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
               Payment Checkout
             </h1>
             <p className="text-sm text-gray-500 mt-2">
-              Complete your payment to {paymentFlow === 'electronicSignature' ? 'enable electronic signatures' : 'generate the credit report'}
+              Complete your payment to {effectivePaymentFlow === 'electronicSignature' ? 'enable electronic signatures' : 'generate the credit report'}
             </p>
           </div>
 
-          {/* Payment Summary */}
           <PaymentSummary />
 
-          {/* Payment Form */}
           <PaymentForm
             formData={formData}
             errors={errors}
@@ -98,7 +127,6 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
             onChange={handleChange}
           />
 
-          {/* Pay Button */}
           <button
             onClick={processPayment}
             disabled={isProcessing}
@@ -116,14 +144,13 @@ export const PaymentCheckout: React.FC<PaymentCheckoutProps> = ({
         </div>
       </HomeLayout>
 
-      {/* Dialogs */}
       {showSuccessDialog && (
         <PaymentSuccessDialog
           onDownloadPdf={handleDownloadPDF}
           onClose={() => setShowSuccessDialog(false)}
         />
       )}
-      
+
       {showEmailDialog && (
         <PaymentEmailSentDialog
           onContinue={handleContinueToSignatures}

@@ -63,38 +63,15 @@ export const OwnerServices: React.FC = () => {
     }
   };
 
-  const selectedBottomNavIndex = () => {
-    // En una app real, esto se basaría en el router actual
-    return 3; // Services tab
-  };
-
-  const navigateByIndex = (index: number) => {
-    console.log(`Navigate to tab ${index}`);
-    // Aquí iría la navegación real
-    switch (index) {
-      case 0:
-        alert("Navigate to Home");
-        break;
-      case 1:
-        alert("Navigate to Contracts");
-        break;
-      case 2:
-        alert("Navigate to Properties");
-        break;
-      case 3:
-        // Already on Services
-        break;
-      case 4:
-        alert("Navigate to Settings");
-        break;
-    }
+  const handleNavigate = (route: string, index: number) => {
+    console.log(`Navigate to ${route} (index ${index})`);
+    navigate(route);
   };
 
   return (
     <HomeLayout
       currentRoute="/owner/services"
-      selectedBottomNavIndex={selectedBottomNavIndex()}
-      onBottomNavTapped={navigateByIndex}
+      onNavigate={handleNavigate}
     >
       <div className="animate-fade-in px-4">
         <Header />

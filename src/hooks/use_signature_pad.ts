@@ -5,6 +5,27 @@ export const useSignaturePad = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
 
+  const initCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    canvas.width = canvas.offsetWidth * 2;
+    canvas.height = canvas.offsetHeight * 2;
+    canvas.style.width = `${canvas.offsetWidth}px`;
+    canvas.style.height = `${canvas.offsetHeight}px`;
+
+    ctx.scale(2, 2);
+    ctx.strokeStyle = '#1F2937';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.fillStyle = '#F9FAFB';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }, []);
+
   const startDrawing = useCallback((e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -96,27 +117,6 @@ export const useSignaturePad = () => {
     if (!canvas || isEmpty) return null;
     return canvas.toDataURL('image/png');
   }, [isEmpty]);
-
-  const initCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = canvas.offsetWidth * 2;
-    canvas.height = canvas.offsetHeight * 2;
-    canvas.style.width = `${canvas.offsetWidth}px`;
-    canvas.style.height = `${canvas.offsetHeight}px`;
-
-    ctx.scale(2, 2);
-    ctx.strokeStyle = '#1F2937';
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.fillStyle = '#F9FAFB';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }, []);
 
   return {
     canvasRef,

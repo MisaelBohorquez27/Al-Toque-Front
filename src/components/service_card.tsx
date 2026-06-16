@@ -8,7 +8,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ item }) => {
   return (
     <div
       onClick={item.onTap}
-      className="group relative cursor-pointer overflow-hidden rounded-[24px] border border-white/80 bg-white/85 shadow-[0_18px_60px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(37,99,235,0.14)] animate-slide-up backdrop-blur-xl"
+      className="group relative cursor-pointer overflow-hidden rounded-3xl border border-white/80 bg-white/85 shadow-[0_18px_60px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_70px_rgba(37,99,235,0.14)] animate-slide-up backdrop-blur-xl"
     >
       <div
         className="absolute inset-x-0 top-0 h-1 opacity-90"

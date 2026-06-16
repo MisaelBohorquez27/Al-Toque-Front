@@ -38,44 +38,22 @@ export const UserVerificationPage: React.FC = () => {
 
   const handleConfirmVerification = () => {
     setSelectedUser(null);
-    navigate('/payment-checkout');
+    navigate('/payment-checkout', { state: { paymentFlow: 'identityVerification' } });
   };
 
   const handleCancelVerification = () => {
     alert('Verification cancelled');
   };
 
-  const selectedBottomNavIndex = () => {
-    return 3; // Services tab (ajusta según tu navegación)
-  };
-
-  const navigateByIndex = (index: number) => {
-    console.log(`Navigate to tab ${index}`);
-    switch (index) {
-      case 0:
-        alert('Navigate to Home');
-        break;
-      case 1:
-        alert('Navigate to Contracts');
-        break;
-      case 2:
-        alert('Navigate to Properties');
-        break;
-      case 3:
-        // Already on Services
-        break;
-      case 4:
-        alert('Navigate to Settings');
-        break;
-    }
+  const handleNavigate = (route: string) => {
+    navigate(route);
   };
 
   return (
     <>
       <HomeLayout
         currentRoute="/owner/user-verification"
-        selectedBottomNavIndex={selectedBottomNavIndex()}
-        onBottomNavTapped={navigateByIndex}
+        onNavigate={handleNavigate}
       >
         <div className="space-y-4 md:space-y-6 animate-fade-in">
           {/* Header */}

@@ -21,7 +21,7 @@ export const ElectronicSignatureContract: React.FC = () => {
   };
 
   const handleRemoveParticipant = (id: string) => {
-    setParticipants(participants.filter(p => p.id !== id));
+    setParticipants(participants.filter((p) => p.id !== id));
   };
 
   const handleContinue = () => {
@@ -33,29 +33,27 @@ export const ElectronicSignatureContract: React.FC = () => {
       alert('Please add at least one participant');
       return;
     }
-    
-    // Navegar a la pantalla de firma electrónica
-    navigate('/owner/electronic-signature-sign', {
+
+    navigate('/payment-checkout', {
       state: {
+        paymentFlow: 'electronicSignature',
         participants,
         contractFile,
+        contractFileName: contractFile.name,
       },
     });
   };
 
-  const selectedBottomNavIndex = () => 3;
-  const navigateByIndex = (index: number) => {
-    console.log(`Navigate to tab ${index}`);
+  const handleNavigate = (route: string) => {
+    navigate(route);
   };
 
   return (
     <HomeLayout
       currentRoute="/electronic-signature-contract"
-      selectedBottomNavIndex={selectedBottomNavIndex()}
-      onBottomNavTapped={navigateByIndex}
+      onNavigate={handleNavigate}
     >
       <div className="max-w-4xl mx-auto space-y-5 animate-fade-in">
-        {/* Header */}
         <div>
           <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">
             Electronic Signature
@@ -65,7 +63,6 @@ export const ElectronicSignatureContract: React.FC = () => {
           </p>
         </div>
 
-        {/* Contract Upload Section */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <div className="flex items-center gap-3 mb-5">
             <div className="p-2.5 rounded-xl bg-primary/10">
@@ -79,7 +76,6 @@ export const ElectronicSignatureContract: React.FC = () => {
           <ContractUpload onFileUpload={setContractFile} />
         </div>
 
-        {/* Participants Section */}
         <div className="bg-white rounded-xl border border-gray-200 p-5">
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
@@ -117,7 +113,6 @@ export const ElectronicSignatureContract: React.FC = () => {
           )}
         </div>
 
-        {/* Continue Button */}
         <button
           onClick={handleContinue}
           className="w-full bg-primary text-white font-bold py-3.5 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
